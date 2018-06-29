@@ -4,6 +4,7 @@ from nltk.corpus import stopwords
 import string
 import gensim
 from gensim import corpora
+from gensim import models
 import matplotlib.pyplot as plt
 import plotly
 print(plotly.__version__)  # version >1.9.4 required
@@ -49,9 +50,23 @@ print (ourdata["cleantext"])
 
 dictionary = corpora.Dictionary(ourdata["cleantext"])
 doc_term_matrix = [dictionary.doc2bow(item) for item in ourdata["cleantext"]]
-Lda = gensim.models.ldamodel.LdaModel
-ldamodel = Lda(doc_term_matrix, num_topics=5, id2word = dictionary, passes=50)
-ouroutput = ldamodel.print_topics(num_topics=5, num_words=4)
+
+
+choice = input("LSI or LDA?")
+
+
+if choice == "LDA":
+    Lda = gensim.models.ldamodel.LdaModel
+    ldamodel = Lda(doc_term_matrix, num_topics=5, id2word = dictionary, passes=50)
+    ouroutput = ldamodel.print_topics(num_topics=5, num_words=4)
+
+elif choice == "LSI":
+    lsi = models.LsiModel(doc_term_matrix, num_topics=5, id2word=dictionary)
+    ouroutput = lsi.print_topics(num_topics=5, num_words = 4)
+
+else:
+    print("not defined")
+    
 
 
 
