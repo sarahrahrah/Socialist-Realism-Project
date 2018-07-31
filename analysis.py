@@ -29,7 +29,7 @@ otherstop = set(otherstopwords)
 stop.update(otherstop)
 exclude = set(string.punctuation)
 
-git 
+ 
 def clean(doc):
     nostop = " ".join([i for i in doc.lower().split() if i not in stop])
     nopunc = ''.join(ch for ch in nostop if ch not in exclude)
