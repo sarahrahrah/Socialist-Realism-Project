@@ -30,7 +30,7 @@ for dirpath, dirnames, filenames in os.walk("preliminary_corpus_files_chunked/ba
             sourcelist.append(source)
             text = data.split("***")[5]
             textlist.append(text)
-            bannedorsoclit.append(1)
+            bannedorsoclit.append(0)
 
 
 for dirpath, dirnames, filenames in os.walk("preliminary_corpus_files_chunked/sr_corpus"):
