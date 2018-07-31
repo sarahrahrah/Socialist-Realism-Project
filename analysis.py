@@ -78,9 +78,6 @@ langs = ["SocReal/vsBannedLit"]
 results = OrderedDict([('Corpora',langs),
                      ('Accuracy of Model (%)', acc)])
 newdf = pd.DataFrame.from_dict(results)
-from plotly import figure_factory as ff
-table = ff.create_table(newdf)
-plotly.offline.plot(table, filename='MLRESULTSTABLE.html')
 
 def print_top10(vectorizer, clf, class_labels):
     """Prints features with the highest coefficient values, for the positive case"""
@@ -92,5 +89,9 @@ def print_top10(vectorizer, clf, class_labels):
           
 
 print_top10(count_vectorizer, runb_classifier, runb_classifier.classes_)
+
+from plotly import figure_factory as ff
+table = ff.create_table(newdf)
+plotly.offline.plot(table, filename='MLRESULTSTABLE.html')
 
 
