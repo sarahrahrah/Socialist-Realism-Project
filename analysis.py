@@ -40,7 +40,7 @@ def clean(doc):
 
 df["text"] = df["text"].apply(clean)
 
-print (df["text"] )
+# print (df["text"] )
 
 X_train, X_test, y_train, y_test = train_test_split(
                                              df['text'], y, 
@@ -82,6 +82,15 @@ from plotly import figure_factory as ff
 table = ff.create_table(newdf)
 plotly.offline.plot(table, filename='MLRESULTSTABLE.html')
 
+def print_top10(vectorizer, clf, class_labels):
+    """Prints features with the highest coefficient values, for the positive case"""
+    feature_names = vectorizer.get_feature_names()
+    for i, class_label in [enumerate(class_labels)]:
+        top10 = np.argsort(clf.coef_[0])[-10:]
+        print("%s: %s" % (class_label,
+              " ".join(feature_names[j] for j in top10)))
+          
 
+print_top10(count_vectorizer, runb_classifier, runb_classifier.classes_)
 
 
