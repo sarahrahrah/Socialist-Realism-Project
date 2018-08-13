@@ -24,7 +24,7 @@ y = df['bannedorsoclit']
 
 stemmer = SnowballStemmer("russian")
 stop = set(stopwords.words('russian'))
-otherstopwords = ["это","да","наш","сво","одн","говор","сказа","нам","—","котор","мо","очен"]
+otherstopwords = ["это","да","наш","сво","одн","говор","сказа","нам","—","котор","мо","очен","эт","теб"]
 otherstop = set(otherstopwords)
 stop.update(otherstop)
 exclude = set(string.punctuation)
@@ -78,6 +78,24 @@ langs = ["SocReal/vsBannedLit"]
 results = OrderedDict([('Corpora',langs),
                      ('Accuracy of Model (%)', acc)])
 newdf = pd.DataFrame.from_dict(results)
+
+
+def print_top10(vectorizer, clf, class_labels):
+    """Prints features with the highest coefficient values, for the positive case"""
+    feature_names = vectorizer.get_feature_names()
+    for i, class_label in [enumerate(class_labels)]:
+        top10 = np.argsort(clf.coef_[0])[-10:]
+        print("%s: %s" % (class_label,
+              " ".join(feature_names[j] for j in top10)))
+        top100 = np.argsort(clf.coef_[0])[-100:]
+        print("%s: %s" % (class_label,
+              " ".join(feature_names[j] for j in top100)))
+          
+
+print_top10(count_vectorizer, runb_classifier, runb_classifier.classes_)
+
+
+
 from plotly import figure_factory as ff
 table = ff.create_table(newdf)
 plotly.offline.plot(table, filename='MLRESULTSTABLE.html')
