@@ -83,6 +83,20 @@ newdf = pd.DataFrame.from_dict(results)
 def print_top10(vectorizer, clf, class_labels):
     """Prints features with the highest coefficient values, for the positive case"""
     feature_names = vectorizer.get_feature_names()
+    topn_class1 = sorted(zip(clf.feature_count_[0], feature_names),reverse=True)[:100]
+    topn_class2 = sorted(zip(clf.feature_count_[1], feature_names),reverse=True)[:100]
+
+    print("Important words in banned lit")
+    for coef, feat in topn_class1:
+        print(class_labels[0], coef, feat)
+    print("-----------------------------------------")
+    print("Important words in socialist realism")
+    for coef, feat in topn_class2:
+        print(class_labels[1], coef, feat) 
+
+    
+    print (class_labels)
+        
     for i, class_label in [enumerate(class_labels)]:
         top10 = np.argsort(clf.coef_[0])[-10:]
         print("%s: %s" % (class_label,
@@ -90,7 +104,7 @@ def print_top10(vectorizer, clf, class_labels):
         top100 = np.argsort(clf.coef_[0])[-100:]
         print("%s: %s" % (class_label,
               " ".join(feature_names[j] for j in top100)))
-          
+
 
 print_top10(count_vectorizer, runb_classifier, runb_classifier.classes_)
 
