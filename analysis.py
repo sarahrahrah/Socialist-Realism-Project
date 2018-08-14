@@ -10,6 +10,8 @@ from sklearn.model_selection import train_test_split
 from sklearn.model_selection import cross_val_score
 from sklearn.naive_bayes import MultinomialNB
 from sklearn import metrics
+from sklearn.utils import shuffle
+
 
 import plotly
 import string
@@ -20,6 +22,8 @@ from collections import OrderedDict
 acc = []
 
 df = pd.read_csv("DATAFORANALYSIS.csv")
+df = shuffle(df)
+
 y = df['bannedorsoclit']
 
 stemmer = SnowballStemmer("russian")
