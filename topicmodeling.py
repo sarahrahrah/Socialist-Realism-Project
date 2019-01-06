@@ -11,45 +11,63 @@ print(plotly.__version__)  # version >1.9.4 required
 from plotly.graph_objs import Scatter, Layout
 import collections
 from collections import OrderedDict
+from pymystem3 import Mystem
+import re
 
+# Import data from csv
 
-ourdata = pd.read_csv("LITERATURE.csv")
-
-thetext = ourdata["text"]
-
-from nltk.stem.snowball import SnowballStemmer
-stemmer = SnowballStemmer("russian")
-
-stop = set(stopwords.words('russian'))
-
-
-otherstopwords = ["это","да","наш","сво","одн","говор","сказа","нам","—","котор","мо","очен"]
-otherstop = set(otherstopwords)
-
-stop.update(otherstop)
+litdata = pd.read_csv("LITERATURE.csv")
+littext = litdata["text"]
 
 
 
-exclude = set(string.punctuation) 
+# Create a column in the dataframe that is the literature minus
+# all punctuation and stopwords
 
-def clean(doc):
-    stop_free = " ".join([i for i in doc.lower().split() if i not in stop])
-    punc_free = ''.join(ch for ch in stop_free if ch not in exclude)
-    stop_freeagain = " ".join([i for i in punc_free.split() if i not in stop])
-    joined = " ".join([stemmer.stem(word) for word in stop_freeagain.split()])
-    stopfree2 = " ".join([i for i in joined.split() if i not in stop])
-    normalized = stopfree2.split()
-    return normalized
+with open('NERoutput.txt') as fp:
+    lines = fp.read().splitlines()
 
+lines = [i.lower() for i in lines]
+stop = list(stopwords.words('russian'))
+stop.extend(['это', 'свой', 'то', ' '])
 
-pd.options.display.max_colwidth = 500
-ourdata["cleantext"] = ourdata["text"].apply(clean)
-
-print (ourdata["cleantext"])
+mystem = Mystem() 
+exclude = list(string.punctuation)
+exclude.extend(['--', '—', '«', '»'," -- ", "-" ,"-", "...", "…", " - ", " « ", "..", "``", "\"\"","\'\'"])
 
 
-dictionary = corpora.Dictionary(ourdata["cleantext"])
-doc_term_matrix = [dictionary.doc2bow(item) for item in ourdata["cleantext"]]
+# Cleaning text
+
+
+
+def losepunctuation(text):
+    tokens = text.split(" ")
+    tokens = [i.strip().lower() for i in tokens]
+    tokens = [i for i in tokens if i not in exclude]
+    tokens = [re.sub(r'[!|,|?|.|:|;]|\.{1,}$\)', "", item) for item in tokens]
+    tokens = [i for i in tokens if i not in stop]
+    tokens = [i for i in tokens if i not in lines]
+    cleanedtext = " ".join(tokens)
+    lemmatized = mystem.lemmatize(cleanedtext.lower())
+    lemmatized = [i for i in lemmatized if i not in exclude]
+    lemmatized = [i for i in lemmatized if i not in stop]
+    lemmatized = [i for i in lemmatized if i not in lines]
+
+    print (lemmatized)
+
+    return lemmatized
+
+
+litdata["cleanedtext"] = litdata["text"].apply(losepunctuation)
+
+print (litdata["cleanedtext"])
+
+
+#Topic Modeling 
+
+
+dictionary = corpora.Dictionary(litdata["cleanedtext"] )
+doc_term_matrix = [dictionary.doc2bow(item) for item in litdata["cleanedtext"] ]
 
 
 choice = input("LSI or LDA?")
