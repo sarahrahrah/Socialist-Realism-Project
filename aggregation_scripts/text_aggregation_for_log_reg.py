@@ -11,7 +11,7 @@ sourcelist = []
 textlist = []
 bannedorsoclit = []
 
-for dirpath, dirnames, filenames in os.walk("preliminary_corpus_files_chunked/banned_lit_corpus"):
+for dirpath, dirnames, filenames in os.walk("/banned_lit_files_chunked_smaller"):
     for filename in filenames:
         if filename != ".DS_Store":
             z = os.path.join(dirpath, filename)
@@ -33,7 +33,7 @@ for dirpath, dirnames, filenames in os.walk("preliminary_corpus_files_chunked/ba
             bannedorsoclit.append("banned_literature")
 
 
-for dirpath, dirnames, filenames in os.walk("preliminary_corpus_files_chunked/sr_corpus"):
+for dirpath, dirnames, filenames in os.walk("/socreal_files_chunked_smaller"):
     for filename in filenames:
         if filename != ".DS_Store":
             z = os.path.join(dirpath, filename)
@@ -63,7 +63,7 @@ newdataframe = pd.DataFrame(OrderedDict({
         "bannedorsoclit": bannedorsoclit
     }))
 
-newdataframe.to_csv('DATAFORANALYSIS.csv', index=False)
+newdataframe.to_csv('__________________.csv', index=False)
 
-print ("The DATAFORANALYSIS.csv file is now created.")
+print ("The _______________________.csv file is now created.")
 
