@@ -10,7 +10,7 @@ englishmetadatalist = []
 sourcelist = []
 textlist = []
 
-for dirpath, dirnames, filenames in os.walk("preliminary_corpus_files"):
+for dirpath, dirnames, filenames in os.walk("_________________________"):
     for filename in filenames:
         if filename != ".DS_Store":
             z = os.path.join(dirpath, filename)
@@ -40,9 +40,9 @@ newdataframe = pd.DataFrame(OrderedDict({
         "text": textlist,
     }))
 
-newdataframe.to_csv('LITERATURE.csv', index=False)
+newdataframe.to_csv('______________________', index=False)
 
-print ("The LITERATURE.csv file is now created.")
+print ("The ____________________.csv file is now created.")
 
 
 
