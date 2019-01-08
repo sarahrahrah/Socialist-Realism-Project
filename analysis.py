@@ -12,6 +12,9 @@ from sklearn.naive_bayes import MultinomialNB
 from sklearn import metrics
 from sklearn.utils import shuffle
 
+from pymystem3 import Mystem
+import re
+
 
 import plotly
 import string
@@ -21,33 +24,46 @@ from collections import OrderedDict
 
 acc = []
 
-df = pd.read_csv("DATAFORANALYSIS.csv")
+df = pd.read_csv("csv_files/data_for_log_reg_smaller_chunks.csv")
 df = shuffle(df)
 
 y = df['bannedorsoclit']
 
-stemmer = SnowballStemmer("russian")
-stop = set(stopwords.words('russian'))
-otherstopwords = ["это","да","наш","сво","одн","говор","сказа","нам","—","котор","мо","очен","эт","теб"]
-otherstop = set(otherstopwords)
-stop.update(otherstop)
-exclude = set(string.punctuation)
-
- 
-def clean(doc):
-    nostop = " ".join([i for i in doc.lower().split() if i not in stop])
-    nopunc = ''.join(ch for ch in nostop if ch not in exclude)
-    stemmed = " ".join([stemmer.stem(word) for word in nopunc.split()])
-    normalized = " ".join([i for i in stemmed.split() if i not in stop]) 
-    return normalized
 
 
-df["text"] = df["text"].apply(clean)
 
-print (df["text"] )
+stop = list(stopwords.words('russian'))
+stop.extend(['это', 'свой', 'то', ' '])
+
+mystem = Mystem() 
+exclude = list(string.punctuation)
+exclude.extend(['--', '—', '«', '»'," -- ", "-" ,"-", "...", "…", " - ", " « ", "..", "``", "\"\"","\'\'"])
+
+
+
+def clean(text):
+    tokens = text.split(" ")
+    tokens = [i.strip().lower() for i in tokens]
+    tokens = [i for i in tokens if i not in exclude]
+    tokens = [re.sub(r'[!|,|?|.|:|;]|\.{1,}$\)', "", item) for item in tokens]
+    tokens = [i for i in tokens if i not in stop]
+    cleanedtext = " ".join(tokens)
+    lemmatized = mystem.lemmatize(cleanedtext.lower())
+    lemmatized = [i for i in lemmatized if i not in exclude]
+    lemmatized = [i for i in lemmatized if i not in stop]
+    lemmatized = " ".join(str(x) for x in lemmatized)
+    print (lemmatized)
+
+    return lemmatized
+
+
+df["cleanedtext"] = df["text"].apply(clean)
+
+print (df["cleanedtext"])
+
 
 X_train, X_test, y_train, y_test = train_test_split(
-                                             df['text'], y, 
+                                             df['cleanedtext'], y, 
                                              test_size=0.3, 
                                              random_state=53)
 
@@ -55,6 +71,10 @@ X_train, X_test, y_train, y_test = train_test_split(
 count_vectorizer = CountVectorizer(stop_words=None)
 count_train = count_vectorizer.fit_transform(X_train.values)
 count_test = count_vectorizer.transform(X_test.values)
+
+
+# fix this for log reg
+
 runb_classifier = MultinomialNB(alpha=1.0, fit_prior=False, class_prior=None)
 
 
