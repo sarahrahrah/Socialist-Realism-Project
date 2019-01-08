@@ -11,7 +11,7 @@ sourcelist = []
 textlist = []
 bannedorsoclit = []
 
-for dirpath, dirnames, filenames in os.walk("/banned_lit_files_chunked_smaller"):
+for dirpath, dirnames, filenames in os.walk("banned_lit_corpus"):
     for filename in filenames:
         if filename != ".DS_Store":
             z = os.path.join(dirpath, filename)
@@ -30,10 +30,11 @@ for dirpath, dirnames, filenames in os.walk("/banned_lit_files_chunked_smaller")
             sourcelist.append(source)
             text = data.split("***")[5]
             textlist.append(text)
-            bannedorsoclit.append("banned_literature")
+ #           bannedorsoclit.append("banned_literature")
+            bannedorsoclit.append("0")
 
 
-for dirpath, dirnames, filenames in os.walk("/socreal_files_chunked_smaller"):
+for dirpath, dirnames, filenames in os.walk("socialist_realism_corpus"):
     for filename in filenames:
         if filename != ".DS_Store":
             z = os.path.join(dirpath, filename)
@@ -52,7 +53,8 @@ for dirpath, dirnames, filenames in os.walk("/socreal_files_chunked_smaller"):
             sourcelist.append(source)
             text = data.split("***")[5]
             textlist.append(text)
-            bannedorsoclit.append("socialist_realism")
+ #           bannedorsoclit.append("socialist_realism")
+            bannedorsoclit.append("1")
 
 
 newdataframe = pd.DataFrame(OrderedDict({
@@ -63,7 +65,7 @@ newdataframe = pd.DataFrame(OrderedDict({
         "bannedorsoclit": bannedorsoclit
     }))
 
-newdataframe.to_csv('__________________.csv', index=False)
+newdataframe.to_csv('data_for_log_reg_large_chunks.csv', index=False)
 
 print ("The _______________________.csv file is now created.")
 
