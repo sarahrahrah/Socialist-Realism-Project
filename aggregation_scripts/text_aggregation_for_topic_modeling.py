@@ -10,7 +10,7 @@ englishmetadatalist = []
 sourcelist = []
 textlist = []
 
-for dirpath, dirnames, filenames in os.walk("_________________________"):
+for dirpath, dirnames, filenames in os.walk("/Users/sarahmceleney/Desktop/socialist-realism-project-cleaner/corpus_files_chunked/socreal_files_chunked_smaller"):
     for filename in filenames:
         if filename != ".DS_Store":
             z = os.path.join(dirpath, filename)
@@ -40,7 +40,7 @@ newdataframe = pd.DataFrame(OrderedDict({
         "text": textlist,
     }))
 
-newdataframe.to_csv('______________________', index=False)
+newdataframe.to_csv('socreal_files_chunked_smaller.csv', index=False)
 
 print ("The ____________________.csv file is now created.")
 

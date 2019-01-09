@@ -10,7 +10,7 @@ import os
 
 import re
 
-for root, dirs, files in os.walk("/Users/sarahmceleney/Desktop/socialist-realism-project-cleaner/corpus_files/banned_lit/"):  
+for root, dirs, files in os.walk("/Users/sarahmceleney/Desktop/socialist-realism-project-cleaner/corpus_files/socialist_realism/"):  
     for filename in files:
         file = open(os.path.join(root, filename), 'r').read()
 
