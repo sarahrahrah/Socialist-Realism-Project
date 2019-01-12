@@ -9,9 +9,9 @@ The folders chunking_scripts, aggregation_scripts, and NER_script all contain va
 
 The following python libraries were used in the analysis:
 
-nltk
-gensim
-plotly
-matplotlib 
-pymystem
-pyLDAvis
+*nltk
+*gensim
+*plotly
+*matplotlib 
+*pymystem
+*pyLDAvis
