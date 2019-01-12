@@ -12,6 +12,7 @@ The following python libraries were used in the analysis:
 - nltk
 - gensim
 - plotly
+- sklearn
 - matplotlib 
 - pymystem
 - pyLDAvis
