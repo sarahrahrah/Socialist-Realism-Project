@@ -1,7 +1,7 @@
 # Socialist Realism Text Analysis Project
 
 
-This digital humanities project use text analysis techniques to examine the characteristics of Soviet socialist realism of the pre-WII era.  
+This digital humanities project uses text analysis techniques to examine the characteristics of Soviet socialist realism of the pre-WII era.  
 
 Logistic regression and topic modeling were used to examine the corpora.  The scripts prediction.py and topicmodeling.py contain these techniques, applied to the corpora.  The jupyter notebook (socialist-realism-project-notebook.ipynb) also contains the analysis, with some visualization.
 
